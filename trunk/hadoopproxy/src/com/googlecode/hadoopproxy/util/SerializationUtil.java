@@ -28,6 +28,4 @@ public class SerializationUtil {
 		return obj;
 	}
 
-	
-
 }

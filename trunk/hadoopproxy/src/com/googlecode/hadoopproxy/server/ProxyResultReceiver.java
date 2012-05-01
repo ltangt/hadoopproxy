@@ -36,9 +36,10 @@ public class ProxyResultReceiver extends Thread {
 	}
 
 	public void run() {
+		LOG.info("Result receiver server is started...");
 		try {
 			while (true) {
-				Socket taskOutputSocket = resultRecvSocket.accept();
+				Socket taskOutputSocket = resultRecvSocket.accept();				
 				ResultReceiverThread childThread = new ResultReceiverThread(taskOutputSocket);
 				childThread.start();
 			}
@@ -81,6 +82,7 @@ public class ProxyResultReceiver extends Thread {
 		Socket taskSocket = null;
 
 		public ResultReceiverThread(Socket taskSocket) {
+			super();
 			this.taskSocket = taskSocket;
 		}
 

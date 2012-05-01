@@ -24,6 +24,7 @@ import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
 import com.googlecode.hadoopproxy.ProxyTask;
+import com.googlecode.hadoopproxy.util.ClassLoaderUtil;
 import com.googlecode.hadoopproxy.util.SerializationUtil;
 
 
@@ -38,7 +39,7 @@ public class ProxyTaskInputFormat extends InputFormat<LongWritable, TaskWritable
 		String proxyJobID = getProxyJobID(context);
 		String taskObjFileName = getTaskObjFileName(context);
 		LOG.info("Loaded the serialized task object file : "+taskObjFileName);
-		List<ProxyTask> taskList = readTaskList(taskObjFileName);
+		List<ProxyTask> taskList = readTaskList(context, taskObjFileName);
 		LOG.info("Loaded the task list consisting of  "+taskList.size()+" proxy tasks.");
 		List<InputSplit> inputSplits = new ArrayList<InputSplit>();
 		for (int i=0; i<taskList.size(); i++) {
@@ -73,7 +74,6 @@ public class ProxyTaskInputFormat extends InputFormat<LongWritable, TaskWritable
 		return context.getConfiguration().get("mapred.hadoopproxy.input.masterserver", "");	
 	}
 	
-	
 	public static void setTaskObjFileName(Job job, String taskObjFileName) {
 		Configuration conf = job.getConfiguration();
 		conf.set("mapred.hadoopproxy.input.task", taskObjFileName);
@@ -84,7 +84,7 @@ public class ProxyTaskInputFormat extends InputFormat<LongWritable, TaskWritable
 		return context.getConfiguration().get("mapred.hadoopproxy.input.task", "");		
 	}
 	
-	private static List<ProxyTask> readTaskList(String diskFileName) throws IOException {
+	private static List<ProxyTask> readTaskList(JobContext context, String diskFileName) throws IOException {
 		DataInputStream dis = new DataInputStream(new FileInputStream(diskFileName));
 		int numTask = dis.readInt();
 		List<ProxyTask> taskList = new ArrayList<ProxyTask>(numTask);

@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Tue May 01 15:35:21 EDT 2012
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=hadoopproxyserver.jar
+manifest.mergeall=true
+manifest.mainclass=com.googlecode.hadoopproxy.server.ProxyServer
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=<po|hadoopproxy>~com/~googlecode/~hadoopproxy/~test/;<jar|hadoop-0.20.2-core.jar>;<jar|log4j-1.2.16.jar>;<jar|commons-logging-1.1.1.jar>
+includes=
