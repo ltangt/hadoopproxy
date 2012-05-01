@@ -1,4 +1,4 @@
-package com.google.code.hadoopproxy.server;
+package com.googlecode.hadoopproxy.server;
 
 import java.io.DataInput;
 
@@ -12,8 +12,8 @@ import java.io.ObjectOutputStream;
 
 import org.apache.hadoop.io.Writable;
 
-import com.google.code.hadoopproxy.ProxyTask;
-import com.google.code.hadoopproxy.util.SerializationUtil;
+import com.googlecode.hadoopproxy.ProxyTask;
+import com.googlecode.hadoopproxy.util.SerializationUtil;
 
 
 public class TaskWritable implements Writable {

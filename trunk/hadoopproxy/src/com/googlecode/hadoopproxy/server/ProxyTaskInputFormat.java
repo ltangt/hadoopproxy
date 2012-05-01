@@ -1,4 +1,4 @@
-package com.google.code.hadoopproxy.server;
+package com.googlecode.hadoopproxy.server;
 
 import java.io.DataInput;
 import java.io.DataInputStream;
@@ -23,8 +23,8 @@ import org.apache.hadoop.mapreduce.JobContext;
 import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
-import com.google.code.hadoopproxy.ProxyTask;
-import com.google.code.hadoopproxy.util.SerializationUtil;
+import com.googlecode.hadoopproxy.ProxyTask;
+import com.googlecode.hadoopproxy.util.SerializationUtil;
 
 
 public class ProxyTaskInputFormat extends InputFormat<LongWritable, TaskWritable> {

@@ -1,4 +1,4 @@
-package com.google.code.hadoopproxy.util;
+package com.googlecode.hadoopproxy.util;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;

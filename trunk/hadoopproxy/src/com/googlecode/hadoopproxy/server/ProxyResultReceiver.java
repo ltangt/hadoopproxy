@@ -1,4 +1,4 @@
-package com.google.code.hadoopproxy.server;
+package com.googlecode.hadoopproxy.server;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
