@@ -1,4 +1,4 @@
-package com.google.code.hadoopproxy.server;
+package com.googlecode.hadoopproxy.server;
 
 import java.io.BufferedOutputStream;
 
@@ -21,7 +21,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PatternLayout;
 
-import com.google.code.hadoopproxy.util.DateUtil;
+import com.googlecode.hadoopproxy.util.DateUtil;
 
 
 public class ProxyServer {

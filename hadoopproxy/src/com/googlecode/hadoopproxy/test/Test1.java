@@ -1,4 +1,4 @@
-package com.google.code.hadoopproxy.test;
+package com.googlecode.hadoopproxy.test;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
@@ -8,10 +8,10 @@ import java.io.PrintStream;
 
 import org.apache.hadoop.io.Writable;
 
-import com.google.code.hadoopproxy.ProxyClient;
-import com.google.code.hadoopproxy.ProxyTask;
-import com.google.code.hadoopproxy.server.TaskWritable;
-import com.google.code.hadoopproxy.util.IPAddressUtil;
+import com.googlecode.hadoopproxy.ProxyClient;
+import com.googlecode.hadoopproxy.ProxyTask;
+import com.googlecode.hadoopproxy.server.TaskWritable;
+import com.googlecode.hadoopproxy.util.IPAddressUtil;
 
 
 public class Test1 {

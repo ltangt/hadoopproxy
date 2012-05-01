@@ -1,4 +1,4 @@
-package com.google.code.hadoopproxy;
+package com.googlecode.hadoopproxy;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -13,12 +13,12 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.google.code.hadoopproxy.server.ProxyResultReceiver;
-import com.google.code.hadoopproxy.server.ProxyServer;
-import com.google.code.hadoopproxy.util.DateUtil;
-import com.google.code.hadoopproxy.util.FileUtil;
-import com.google.code.hadoopproxy.util.JarUtil;
-import com.google.code.hadoopproxy.util.SerializationUtil;
+import com.googlecode.hadoopproxy.server.ProxyResultReceiver;
+import com.googlecode.hadoopproxy.server.ProxyServer;
+import com.googlecode.hadoopproxy.util.DateUtil;
+import com.googlecode.hadoopproxy.util.FileUtil;
+import com.googlecode.hadoopproxy.util.JarUtil;
+import com.googlecode.hadoopproxy.util.SerializationUtil;
 
 
 public class ProxyClient {

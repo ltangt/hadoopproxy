@@ -1,4 +1,4 @@
-package com.google.code.hadoopproxy;
+package com.googlecode.hadoopproxy;
 
 import java.io.PrintStream;
 import java.io.Serializable;

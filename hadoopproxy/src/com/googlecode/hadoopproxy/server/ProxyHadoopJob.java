@@ -1,4 +1,4 @@
-package com.google.code.hadoopproxy.server;
+package com.googlecode.hadoopproxy.server;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -25,9 +25,9 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
-import com.google.code.hadoopproxy.ProxyTask;
-import com.google.code.hadoopproxy.util.IPAddressUtil;
-import com.google.code.hadoopproxy.util.SerializationUtil;
+import com.googlecode.hadoopproxy.ProxyTask;
+import com.googlecode.hadoopproxy.util.IPAddressUtil;
+import com.googlecode.hadoopproxy.util.SerializationUtil;
 
 
 public class ProxyHadoopJob {
