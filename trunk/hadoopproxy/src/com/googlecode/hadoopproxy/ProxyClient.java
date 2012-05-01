@@ -30,6 +30,10 @@ public class ProxyClient {
 	private List<ProxyTask> taskList = new ArrayList<ProxyTask>();
 	
 	private String[] classPaths = null;
+	
+	public ProxyClient(String serverName) {
+		this(serverName, new String[]{"bin","build"});
+	}
 		
 	public ProxyClient(String serverName, String[] classPaths) {
 		this.serverName = serverName;
