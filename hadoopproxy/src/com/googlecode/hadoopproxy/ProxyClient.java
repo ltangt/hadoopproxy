@@ -54,7 +54,11 @@ public class ProxyClient {
 			// Create the jar file
 			String dateId = DateUtil.createID();
 			String jarTmpName = "proxyclient_"+dateId+".jar";
-			JarUtil.createJar(jarTmpName, classPaths);
+			String[] excludePackages = new String[] {
+					"com.googlecode.hadoopproxy.server",
+					"com.googlecode.hadoopproxy.util",
+			};
+			JarUtil.createJar(jarTmpName, classPaths, excludePackages);
 			LOG.info("Created jar file : "+jarTmpName);
 			
 			// Send jar file

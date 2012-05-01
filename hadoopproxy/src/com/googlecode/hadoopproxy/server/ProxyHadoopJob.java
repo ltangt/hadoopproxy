@@ -24,6 +24,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.apache.hadoop.util.GenericOptionsParser;
 
 import com.googlecode.hadoopproxy.ProxyTask;
 import com.googlecode.hadoopproxy.util.IPAddressUtil;
@@ -88,18 +89,15 @@ public class ProxyHadoopJob {
 			throw new FileNotFoundException("Client Jar File : "+clientJarFileName + " does not exist!");
 		}
 		LOG.info("Fetch the client jar sent from the client : "+clientJarFile.getAbsolutePath());
-		
-//		File jobJarFile = new File("hadoopproxyserver.jar");
-//		if (jobJarFile.exists() == false) {
-//			LOG.error("Job Jar File : hadoopproxyserver.jar does not exist!");
-//			throw new FileNotFoundException("Job Jar File : hadoopproxyserver.jar does not exist!");
-//		}
+
 		
 		// Create the Hadoop Job
 		JobConf conf = new JobConf(ProxyHadoopJob.class);
 		Job job = new Job(conf, clientJarFileName);
-		// conf.setJar(jobJarFile.getAbsolutePath());
-		conf.set("tmpjars", clientJarFile.getAbsolutePath());
+		
+		GenericOptionsParser optionParser = new GenericOptionsParser(job.getConfiguration(), new String[]{
+			"-libjars", clientJarFileName
+		});
 
 		job.setOutputKeyClass(LongWritable.class);
 		job.setOutputValueClass(Text.class);
@@ -114,7 +112,7 @@ public class ProxyHadoopJob {
 		ProxyTaskInputFormat.setTaskObjFileName(job, taskObjFileName);
 		ProxyTaskInputFormat.setMasterServerName(job, IPAddressUtil.getIPAddress());
 		ProxyTaskInputFormat.setProxyJobID(job, proxyJobID);
-		
+	
 		LOG.info("Hadoop job is started.");
 		job.waitForCompletion(true);
 		LOG.info("Hadoop job is completed.");

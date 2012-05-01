@@ -5,12 +5,17 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +26,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PatternLayout;
 
+import com.googlecode.hadoopproxy.util.ClassLoaderUtil;
 import com.googlecode.hadoopproxy.util.DateUtil;
 
 
@@ -47,6 +53,8 @@ public class ProxyServer {
 	
 	public final static String RESPONSE_SUCCESS = "sucesss";
 	
+	public final static String REPSONSE_FAILED = "failed";
+	
 	
 	public ProxyServer() {
 		
@@ -59,7 +67,7 @@ public class ProxyServer {
 		// Start the result receiver server
 		retReceiver = new ProxyResultReceiver();
 		retReceiver.start();
-		LOG.info("Result receiver server is started...");
+		
 		
 		// Start the command server
 		boolean bRunning = true;
@@ -116,6 +124,17 @@ public class ProxyServer {
 		}
 		bos.close();
 		fos.close();
+		
+		// Add this jar into the system class loader
+		try {
+			ClassLoaderUtil.addJarToSystemClassLoader(jarFileName);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			dos.writeUTF(REPSONSE_FAILED);
+			return;
+		}
+		
 		dos.writeUTF(RESPONSE_SUCCESS);
 	}
 	
