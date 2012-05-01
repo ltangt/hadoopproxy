@@ -20,9 +20,6 @@ public class JarUtil {
 		File[] files = new File[paths.length];
 		for (int i=0; i<paths.length; i++) {
 			files[i] = new File(paths[i]);
-			if (files[i].exists() == false) {
-				throw new FileNotFoundException(paths[i]);
-			}
 		}
 		createJar(jarFileName, files, excludePackages);
 	}
@@ -36,7 +33,9 @@ public class JarUtil {
 			}
 		}
 		for (File f: paths) {
-			add(jarOut, f, f.getPath(), excludePackages);
+			if (f.exists()) {
+				add(jarOut, f, f.getPath(), excludePackages);
+			}
 		}
 		jarOut.close();
 		fileOut.close();
