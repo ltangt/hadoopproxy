@@ -15,7 +15,16 @@ import org.apache.hadoop.io.Writable;
 import com.googlecode.hadoopproxy.ProxyTask;
 import com.googlecode.hadoopproxy.util.SerializationUtil;
 
-
+/**
+ * 
+ * 
+ *  Copyright  2012, 
+ *  
+ *  @author Liang Tang
+ *
+ *  @version Created: May 1, 2012 8:34:01 PM
+ *
+ */
 public class TaskWritable implements Writable {
 	
 	ProxyTask t;

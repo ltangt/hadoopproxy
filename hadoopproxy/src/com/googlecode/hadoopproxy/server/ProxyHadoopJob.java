@@ -30,7 +30,16 @@ import com.googlecode.hadoopproxy.ProxyTask;
 import com.googlecode.hadoopproxy.util.IPAddressUtil;
 import com.googlecode.hadoopproxy.util.SerializationUtil;
 
-
+/**
+ * 
+ * 
+ *  Copyright  2012,
+ *  
+ *  @author Liang Tang
+ *
+ *  @version Created: May 1, 2012 8:33:17 PM
+ *
+ */
 public class ProxyHadoopJob {
 	
 	private static final Log LOG = LogFactory.getLog(ProxyHadoopJob.class);

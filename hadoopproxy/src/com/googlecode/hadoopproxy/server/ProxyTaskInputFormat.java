@@ -27,7 +27,16 @@ import com.googlecode.hadoopproxy.ProxyTask;
 import com.googlecode.hadoopproxy.util.ClassLoaderUtil;
 import com.googlecode.hadoopproxy.util.SerializationUtil;
 
-
+/**
+ * 
+ * 
+ *  Copyright  2012, 
+ *  
+ *  @author Liang Tang
+ *
+ *  @version Created: May 1, 2012 8:33:52 PM
+ *
+ */
 public class ProxyTaskInputFormat extends InputFormat<LongWritable, TaskWritable> {
 	
 	private static final Log LOG = LogFactory.getLog(ProxyTaskInputFormat.class);
