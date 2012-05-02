@@ -7,8 +7,13 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 /**
- * A tool for reading/writing disk files
- * @author Liang
+ *  A tool for reading/writing disk files
+ * 
+ *  Copyright  2012, 
+ *  
+ *  @author Liang Tang
+ *
+ *  @version Created: May 1, 2012 8:34:22 PM
  *
  */
 public class FileUtil {

@@ -10,6 +10,16 @@ import org.apache.hadoop.mapreduce.OutputFormat;
 import org.apache.hadoop.mapreduce.RecordWriter;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 
+/**
+ * 
+ * 
+ *  Copyright  2012, 
+ *  
+ *  @author Liang Tang
+ *
+ *  @version Created: May 1, 2012 8:33:57 PM
+ *
+ */
 public class ProxyTaskOutputFormat extends OutputFormat<LongWritable, Text> {
 	
 	public ProxyTaskOutputFormat() {

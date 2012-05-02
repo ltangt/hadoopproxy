@@ -7,8 +7,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- * A tool class for object serialization
- * @author Liang
+ *  A tool class for object serialization
+ * 
+ *  Copyright  2012, 
+ *  
+ *  @author Liang Tang
+ *
+ *  @version Created: May 1, 2012 8:34:49 PM
  *
  */
 public class SerializationUtil {

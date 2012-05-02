@@ -20,7 +20,15 @@ import com.googlecode.hadoopproxy.util.FileUtil;
 import com.googlecode.hadoopproxy.util.JarUtil;
 import com.googlecode.hadoopproxy.util.SerializationUtil;
 
-
+/**
+ * 
+ * 
+ *  Copyright  2012, FIU 
+ *  
+ *  @author Liang Tang
+ *
+ *  @version Created: May 1, 2012 8:32:34 PM
+ */
 public class ProxyClient {
 	
 	private static final Log LOG = LogFactory.getLog(ProxyClient.class);

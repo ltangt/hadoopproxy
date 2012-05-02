@@ -10,8 +10,13 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 
 /**
- * A Jar file creation tool class
- * @author Liang
+ *  A Jar file creation tool class
+ * 
+ *  Copyright  2012, 
+ *  
+ *  @author Liang Tang
+ *
+ *  @version Created: May 1, 2012 8:34:38 PM
  *
  */
 public class JarUtil {

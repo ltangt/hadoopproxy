@@ -3,6 +3,16 @@ package com.googlecode.hadoopproxy.util;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+/**
+ * 
+ * 
+ *  Copyright  2012, 
+ *  
+ *  @author Liang Tang
+ *
+ *  @version Created: May 1, 2012 8:34:09 PM
+ *
+ */
 public class DateUtil {
 
 	public static final String DATE_FORMAT_NOW = "yyyy-MM-dd HH:mm:ss";

@@ -14,7 +14,16 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
+/**
+ * 
+ * 
+ *  Copyright  2012, 
+ *  
+ *  @author Liang Tang
+ *
+ *  @version Created: May 1, 2012 8:33:44 PM
+ *
+ */
 public class ProxyResultReceiver extends Thread {
 	
 	private static final Log LOG = LogFactory.getLog(ProxyResultReceiver.class);

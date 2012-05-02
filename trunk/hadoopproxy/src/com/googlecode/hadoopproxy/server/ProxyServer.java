@@ -29,7 +29,16 @@ import org.apache.log4j.PatternLayout;
 import com.googlecode.hadoopproxy.util.ClassLoaderUtil;
 import com.googlecode.hadoopproxy.util.DateUtil;
 
-
+/**
+ * 
+ * 
+ *  Copyright  2012, 
+ *  
+ *  @author Liang Tang
+ *
+ *  @version Created: May 1, 2012 8:33:48 PM
+ *
+ */
 public class ProxyServer {
 	
 	private static final Log LOG = LogFactory.getLog(ProxyServer.class);
