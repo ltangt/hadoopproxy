@@ -8,6 +8,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.net.URLDecoder;
+import java.util.Enumeration;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -80,5 +82,27 @@ public class ClassLoaderUtil {
 			}
 		}
 	}
+	
+	public static String findContainingJar(Class my_class) {
+	    ClassLoader loader = my_class.getClassLoader();
+	    String class_file = my_class.getName().replaceAll("\\.", "/") + ".class";
+	    try {
+	      for(Enumeration itr = loader.getResources(class_file);
+	          itr.hasMoreElements();) {
+	        URL url = (URL) itr.nextElement();
+	        if ("jar".equals(url.getProtocol())) {
+	          String toReturn = url.getPath();
+	          if (toReturn.startsWith("file:")) {
+	            toReturn = toReturn.substring("file:".length());
+	          }
+	          toReturn = URLDecoder.decode(toReturn, "UTF-8");
+	          return toReturn.replaceAll("!.*$", "");
+	        }
+	      }
+	    } catch (IOException e) {
+	      throw new RuntimeException(e);
+	    }
+	    return null;
+	  }
 
 }

@@ -27,6 +27,7 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
 import com.googlecode.hadoopproxy.ProxyTask;
+import com.googlecode.hadoopproxy.util.ClassLoaderUtil;
 import com.googlecode.hadoopproxy.util.IPAddressUtil;
 import com.googlecode.hadoopproxy.util.SerializationUtil;
 
@@ -88,9 +89,9 @@ public class ProxyHadoopJob {
 
 	
 
-	public static void executeJob(String clientJarFileName, String taskObjFileName, String proxyJobID, 
-			String libDirectoryName, List<String> tmpFileNames) throws Exception {
-		
+	public static void executeJob(String clientJarFileName, String taskObjFileName, String proxyJobID, List<String> tmpFileNames,
+			String libDirectoryName, String tmpFileDirectoryName) throws Exception {
+
 		// Fetch the client jar sent from the client
 		File clientJarFile = new File(clientJarFileName);
 		if (clientJarFile.exists() == false) {
@@ -115,18 +116,33 @@ public class ProxyHadoopJob {
 		
 		// Set up the tmpfiles
 		StringBuffer fileOptionBuf = new StringBuffer();
+		int numTmpFiles = 0;
 		for (int tmpFileIndex = 0; tmpFileIndex < tmpFileNames.size(); tmpFileIndex++) {
 			String tmpFileName = tmpFileNames.get(tmpFileIndex);
-			if (tmpFileIndex > 0) {
+			if (numTmpFiles > 0) {
 				fileOptionBuf.append(",");
 			}
 			fileOptionBuf.append(tmpFileName);
+			numTmpFiles++;
+		}
+		File tmpFileDirectory = new File(tmpFileDirectoryName);
+		if (tmpFileDirectory.exists()) {
+			File[] tmpFiles = tmpFileDirectory.listFiles();
+			for (File tmpFile : tmpFiles) {
+				String tmpFileName = tmpFile.getPath();
+				if (numTmpFiles > 0) {
+					fileOptionBuf.append(",");
+				}
+				fileOptionBuf.append(tmpFileName);
+				numTmpFiles++;
+			}
 		}
 		LOG.info("tmpfiles = "+fileOptionBuf.toString());
+		
 
 		// Set up the hadoop options
 		String[] optArgs = null;
-		if (tmpFileNames.size() > 0) {
+		if (numTmpFiles > 0) {
 			optArgs = new String[]{"-libjars", libJarOptions, "-files", fileOptionBuf.toString()};
 		}
 		else {

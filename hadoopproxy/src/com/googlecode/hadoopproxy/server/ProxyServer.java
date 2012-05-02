@@ -26,6 +26,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PatternLayout;
 
+import com.googlecode.hadoopproxy.ProxyTask;
 import com.googlecode.hadoopproxy.util.ClassLoaderUtil;
 import com.googlecode.hadoopproxy.util.DateUtil;
 import com.googlecode.hadoopproxy.util.FileUtil;
@@ -69,6 +70,8 @@ public class ProxyServer {
 	
 	public final static String LIB_DIRECTORY_NAME = "lib";
 	
+	public final static String TMPFILES_DIRECTORY_NAME = "files";
+	
 	
 	public ProxyServer() {
 		
@@ -79,10 +82,15 @@ public class ProxyServer {
 		LOG.info("Hadoop Proxy server is started...");
 		
 		// Load jar files in the library folder
+		String currentJarPath = ClassLoaderUtil.findContainingJar(ProxyTask.class);
+		LOG.warn(currentJarPath);
+		ClassLoaderUtil.addJarToSystemClassLoader(currentJarPath);
+		
 		File libFolder = new File(LIB_DIRECTORY_NAME);
 		if (libFolder.exists()) {
 			ClassLoaderUtil.addLibDirectoryToSystemClassLoader(LIB_DIRECTORY_NAME);
 		}
+		
 		
 		// Start the result receiver server
 		retReceiver = new ProxyResultReceiver();
@@ -208,7 +216,8 @@ public class ProxyServer {
 		retReceiver.addClientOut(proxyJobID, dos);
 		
 		// Execute the job in hadoop
-		ProxyHadoopJob.executeJob(clientJarName, taskListFileName, proxyJobID, LIB_DIRECTORY_NAME, tmpFileNames);
+		ProxyHadoopJob.executeJob(clientJarName, taskListFileName, proxyJobID, tmpFileNames,
+				LIB_DIRECTORY_NAME, TMPFILES_DIRECTORY_NAME);
 		
 		// Remove from result receiver server
 		retReceiver.removeClientOut(proxyJobID);
