@@ -50,8 +50,10 @@ public class Test1 {
 
 		public void run(PrintStream out) throws InterruptedException {
 			// TODO Auto-generated method stub
+			String[] tokens = line.split("\\s");
 			line = line.replaceAll("\\s", "==");
 			out.println(IPAddressUtil.getIPAddress()+" : "+line);
+			out.println("Num. of Tokens : "+tokens.length);
 		}
 		
 	}

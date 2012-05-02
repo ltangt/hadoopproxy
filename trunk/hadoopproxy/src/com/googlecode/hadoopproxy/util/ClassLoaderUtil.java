@@ -46,7 +46,7 @@ public class ClassLoaderUtil {
 		method = urlClass.getDeclaredMethod("addURL", new Class[] { URL.class });
 		method.setAccessible(true);
 		method.invoke(loader, new Object[] { jarFile.toURI().toURL() });
-		LOG.info("Added " + jarFile.getName() + " into the current class loader");
+		LOG.info("Added " + jarFile.getName() + " into the thread class loader");
 		Thread.currentThread().setContextClassLoader(loader);
 	}
 	
@@ -62,10 +62,10 @@ public class ClassLoaderUtil {
 		method = urlClass.getDeclaredMethod("addURL", new Class[] { URL.class });
 		method.setAccessible(true);
 		method.invoke(loader, new Object[] { jarFile.toURI().toURL() });
-		LOG.info("Added " + jarFile + " into the current class loader");
+		LOG.info("Added " + jarFile + " into the system class loader");
 	}
 
-	public static void addJarFolderToSystemClassLoader(String jarFolderName) throws Exception {
+	public static void addLibDirectoryToSystemClassLoader(String jarFolderName) throws Exception {
 		File file = new File(jarFolderName);
 		if (file.exists() == false) {
 			throw new FileNotFoundException(jarFolderName);
