@@ -64,6 +64,8 @@ public class ProxyServer {
 	
 	public final static String REPSONSE_FAILED = "failed";
 	
+	public final static String LIB_DIRECTORY_NAME = "lib";
+	
 	
 	public ProxyServer() {
 		
@@ -72,6 +74,12 @@ public class ProxyServer {
 	public void run() throws Exception {
 		commandSocket = new ServerSocket(COMMAND_SOCKET_PORT);
 		LOG.info("Hadoop Proxy server is started...");
+		
+		// Load jar files in the library folder
+		File libFolder = new File(LIB_DIRECTORY_NAME);
+		if (libFolder.exists()) {
+			ClassLoaderUtil.addLibDirectoryToSystemClassLoader(LIB_DIRECTORY_NAME);
+		}
 		
 		// Start the result receiver server
 		retReceiver = new ProxyResultReceiver();
@@ -182,7 +190,7 @@ public class ProxyServer {
 		retReceiver.addClientOut(proxyJobID, dos);
 		
 		// Execute the job in hadoop
-		ProxyHadoopJob.executeJob(clientJarName, taskListFileName, proxyJobID);
+		ProxyHadoopJob.executeJob(clientJarName, taskListFileName, proxyJobID, LIB_DIRECTORY_NAME);
 		
 		// Remove from result receiver server
 		retReceiver.removeClientOut(proxyJobID);

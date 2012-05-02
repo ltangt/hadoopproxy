@@ -87,7 +87,8 @@ public class ProxyHadoopJob {
 
 	
 
-	public static void executeJob(String clientJarFileName, String taskObjFileName, String proxyJobID) throws Exception {
+	public static void executeJob(String clientJarFileName, String taskObjFileName, String proxyJobID, 
+			String libDirectoryName) throws Exception {
 		// Read proxy task objects
 		LOG.info("Prepare to lanuch the Hadoop job.");
 		
@@ -97,16 +98,23 @@ public class ProxyHadoopJob {
 			LOG.error("Client Jar File : "+clientJarFileName + " does not exist!");
 			throw new FileNotFoundException("Client Jar File : "+clientJarFileName + " does not exist!");
 		}
-		LOG.info("Fetch the client jar sent from the client : "+clientJarFile.getAbsolutePath());
-
 		
 		// Create the Hadoop Job
 		JobConf conf = new JobConf(ProxyHadoopJob.class);
 		Job job = new Job(conf, clientJarFileName);
 		
-		GenericOptionsParser optionParser = new GenericOptionsParser(job.getConfiguration(), new String[]{
-			"-libjars", clientJarFileName
-		});
+		// Set up the libjars
+		String libJarOptions = clientJarFileName;
+		File libDirectory = new File(libDirectoryName);
+		if (libDirectory.exists()) {
+			File[] libJarFiles = libDirectory.listFiles();
+			for (File libJarFile : libJarFiles) {
+				libJarOptions += ","+libDirectoryName+"/"+libJarFile.getName();
+			}
+		}
+		GenericOptionsParser optionParser = new GenericOptionsParser(job.getConfiguration(), 
+				new String[]{"-libjars", libJarOptions, "-files", "place-dict.txt,month-dict.txt,disaster-dict.txt"});
+		LOG.info("libjars = "+libJarOptions);
 
 		job.setOutputKeyClass(LongWritable.class);
 		job.setOutputValueClass(Text.class);
