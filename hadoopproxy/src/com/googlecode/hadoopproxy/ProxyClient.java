@@ -164,7 +164,7 @@ public class ProxyClient {
 				if (status.equals(ProxyResultReceiver.STATUS_RESULT)) {
 					String result = dis.readUTF();
 					System.out.println(result);
-					LOG.info(result);
+					// LOG.info(result);
 				}
 				else if (status.equals(ProxyResultReceiver.STATUS_END)) {
 					LOG.info(status);
