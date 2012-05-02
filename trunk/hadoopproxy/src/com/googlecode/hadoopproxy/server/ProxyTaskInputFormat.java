@@ -94,6 +94,12 @@ public class ProxyTaskInputFormat extends InputFormat<LongWritable, TaskWritable
 	}
 	
 	private static List<ProxyTask> readTaskList(JobContext context, String diskFileName) throws IOException {
+		try {
+			Class.forName("com.googlecode.hadoopproxy.ProxyTask");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		DataInputStream dis = new DataInputStream(new FileInputStream(diskFileName));
 		int numTask = dis.readInt();
 		List<ProxyTask> taskList = new ArrayList<ProxyTask>(numTask);
