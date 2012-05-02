@@ -28,6 +28,7 @@ import org.apache.log4j.PatternLayout;
 
 import com.googlecode.hadoopproxy.util.ClassLoaderUtil;
 import com.googlecode.hadoopproxy.util.DateUtil;
+import com.googlecode.hadoopproxy.util.FileUtil;
 
 /**
  * 
@@ -57,6 +58,8 @@ public class ProxyServer {
 	public final static String CMD_SENDJAR = "sendjar";
 	
 	public final static String CMD_SENDTASKLIST = "sendtasklist";
+	
+	public final static String CMD_SENDTMPFILES = "sendtmpfiles";
 	
 	public final static String CMD_RUNJOB = "runjob";
 	
@@ -116,6 +119,9 @@ public class ProxyServer {
 			else if (command.equals(CMD_SENDTASKLIST)) {
 				command_SendTaskList(dis, dos);
 			}
+			else if (command.equals(CMD_SENDTMPFILES)) {
+				command_SendTmpFiles(dis, dos);
+			}
 			else if (command.equals(CMD_RUNJOB)) {
 				command_RunJob(dis, dos);
 			}
@@ -160,19 +166,12 @@ public class ProxyServer {
 		FileOutputStream fos = new FileOutputStream(taskListFileName);
 		BufferedOutputStream bos = new BufferedOutputStream(fos);
 		DataOutputStream diskOut = new DataOutputStream(bos);
-		byte[] buf = new byte[8*1024];
 		int numTask = dis.readInt();
 		diskOut.writeInt(numTask);
 		for (int i=0; i<numTask; i++) {
 			int objSize = dis.readInt();
 			diskOut.writeInt(objSize);
-			int readSize = 0;
-			while(readSize < objSize) {
-				int remainSize = objSize - readSize;
-				int size = dis.read(buf, 0, Math.min(remainSize, buf.length));
-				diskOut.write(buf, 0, size);
-				readSize += size;
-			}
+			FileUtil.copyBuffer(dis, diskOut, objSize);
 		}
 		diskOut.close();
 		bos.close();
@@ -180,17 +179,36 @@ public class ProxyServer {
 		dos.writeUTF(RESPONSE_SUCCESS);
 	}
 	
+	private void command_SendTmpFiles(DataInputStream dis, DataOutputStream dos) throws IOException {
+		int numTmpFiles = dis.readInt();
+		for (int i=0; i<numTmpFiles; i++) {
+			String fileName = dis.readUTF();
+			long fileSize = dis.readLong();
+			BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(fileName));
+			FileUtil.copyBuffer(dis, fos, fileSize);
+			fos.close();
+		}
+		dos.writeUTF(RESPONSE_SUCCESS);
+	}
+	
 	private void command_RunJob(DataInputStream dis, DataOutputStream dos) throws Exception {
 		String clientJarName = dis.readUTF();
 		String taskListFileName = dis.readUTF();
+		int numTmpFiles = dis.readInt();
+		List<String> tmpFileNames = new ArrayList<String>(numTmpFiles);
+		for (int i=0; i<numTmpFiles; i++) {
+			tmpFileNames.add(dis.readUTF());
+		}
+		
+		// Create Proxy Job ID
 		String proxyJobID = "PROXYJOB"+DateUtil.createLongID();		
-		LOG.info("[proxyJobID]="+proxyJobID+" [client jar]="+clientJarName+", [task file]="+taskListFileName);
+		LOG.info("[proxyJobID]="+proxyJobID);
 		
 		// Add this job into result receiver server
 		retReceiver.addClientOut(proxyJobID, dos);
 		
 		// Execute the job in hadoop
-		ProxyHadoopJob.executeJob(clientJarName, taskListFileName, proxyJobID, LIB_DIRECTORY_NAME);
+		ProxyHadoopJob.executeJob(clientJarName, taskListFileName, proxyJobID, LIB_DIRECTORY_NAME, tmpFileNames);
 		
 		// Remove from result receiver server
 		retReceiver.removeClientOut(proxyJobID);

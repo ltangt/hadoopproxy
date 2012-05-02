@@ -3,7 +3,9 @@ package com.googlecode.hadoopproxy;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -39,6 +41,8 @@ public class ProxyClient {
 	
 	private String[] classPaths = null;
 	
+	private List<File> tmpFiles = new ArrayList<File>();
+	
 	public ProxyClient(String serverName) {
 		this(serverName, new String[]{"bin","build"});
 	}
@@ -51,6 +55,24 @@ public class ProxyClient {
 	public void addTask(ProxyTask t) {
 		// TODO Auto-generated method stub
 		taskList.add(t);
+	}
+	
+	public void addTmpFile(File file) {
+		tmpFiles.add(file);
+	}
+	
+	public void addTmpFile(String fileName) throws FileNotFoundException {
+		File file = new File(fileName);
+		if (file.exists() == false) {
+			throw new FileNotFoundException(fileName);
+		}
+		addTmpFile(file);
+	}
+	
+	public void addTmpFiles(String[] fileNames) throws FileNotFoundException {
+		for (String fileName : fileNames) {
+			addTmpFile(fileName);
+		}
 	}
 
 	public void execute() throws IOException {
@@ -105,10 +127,35 @@ public class ProxyClient {
 			}
 			LOG.info("Sent "+taskList.size()+" proxy task objects of "+totalProxyBufSize+" bytes.");
 			
+			// Send temporal files
+			dos.writeUTF(ProxyServer.CMD_SENDTMPFILES);
+			dos.writeInt(tmpFiles.size());
+			long totalTmpFileSize = 0;
+			for (int i=0; i<tmpFiles.size(); i++) {
+				File tmpFile = tmpFiles.get(i);
+				dos.writeUTF(tmpFile.getName());
+				long fileLength = FileUtil.getFileLength(tmpFile);
+				dos.writeLong(fileLength);
+				FileInputStream fos = new FileInputStream(tmpFile);				
+				FileUtil.copyBuffer(fos, dos);
+				fos.close();
+				totalTmpFileSize += fileLength;
+			}
+			serverResponse = dis.readUTF();
+			if (serverResponse.equals(ProxyServer.RESPONSE_SUCCESS) == false) {
+				LOG.info("Sent tmp files failed.");
+				throw new Exception("Sent tmp files failed.");
+			}
+			LOG.info("Sent "+tmpFiles.size()+" tmp files of "+totalTmpFileSize+" bytes.");
+			
 			// Run job
 			dos.writeUTF(ProxyServer.CMD_RUNJOB);
 			dos.writeUTF(jarTmpName);
 			dos.writeUTF(taskObjTmpName);
+			dos.writeInt(tmpFiles.size());
+			for (int i=0; i<tmpFiles.size(); i++) {
+				dos.writeUTF(tmpFiles.get(i).getName());
+			}
 			LOG.info("Started to run hadoop job");
 			
 			// Print intermediate output from each task
