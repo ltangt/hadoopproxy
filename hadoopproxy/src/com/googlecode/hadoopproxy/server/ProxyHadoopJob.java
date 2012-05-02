@@ -62,6 +62,7 @@ public class ProxyHadoopJob {
 			
 			// Send the proxy job ID
 			ps.println(proxyJobID);
+			ps.println(IPAddressUtil.getIPAddress());
 			
 			// Run this task thread
 			t.run(ps);
@@ -88,9 +89,7 @@ public class ProxyHadoopJob {
 	
 
 	public static void executeJob(String clientJarFileName, String taskObjFileName, String proxyJobID, 
-			String libDirectoryName) throws Exception {
-		// Read proxy task objects
-		LOG.info("Prepare to lanuch the Hadoop job.");
+			String libDirectoryName, List<String> tmpFileNames) throws Exception {
 		
 		// Fetch the client jar sent from the client
 		File clientJarFile = new File(clientJarFileName);
@@ -112,9 +111,28 @@ public class ProxyHadoopJob {
 				libJarOptions += ","+libDirectoryName+"/"+libJarFile.getName();
 			}
 		}
-		GenericOptionsParser optionParser = new GenericOptionsParser(job.getConfiguration(), 
-				new String[]{"-libjars", libJarOptions, "-files", "place-dict.txt,month-dict.txt,disaster-dict.txt"});
 		LOG.info("libjars = "+libJarOptions);
+		
+		// Set up the tmpfiles
+		StringBuffer fileOptionBuf = new StringBuffer();
+		for (int tmpFileIndex = 0; tmpFileIndex < tmpFileNames.size(); tmpFileIndex++) {
+			String tmpFileName = tmpFileNames.get(tmpFileIndex);
+			if (tmpFileIndex > 0) {
+				fileOptionBuf.append(",");
+			}
+			fileOptionBuf.append(tmpFileName);
+		}
+		LOG.info("tmpfiles = "+fileOptionBuf.toString());
+
+		// Set up the hadoop options
+		String[] optArgs = null;
+		if (tmpFileNames.size() > 0) {
+			optArgs = new String[]{"-libjars", libJarOptions, "-files", fileOptionBuf.toString()};
+		}
+		else {
+			optArgs =  new String[]{"-libjars", libJarOptions};
+		}
+		GenericOptionsParser optionParser = new GenericOptionsParser(job.getConfiguration(), optArgs);
 
 		job.setOutputKeyClass(LongWritable.class);
 		job.setOutputValueClass(Text.class);

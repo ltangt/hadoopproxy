@@ -99,7 +99,8 @@ public class ProxyResultReceiver extends Thread {
 			try {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(taskSocket.getInputStream()));				
 				String proxyJobID = reader.readLine();
-				LOG.info("Received a task result sender for proxy job :"+proxyJobID);
+				String slaveIP = reader.readLine();
+				LOG.info("Received a connection from the slave "+slaveIP+" for proxy job :"+proxyJobID);
 				while(true) {
 					String line = reader.readLine();
 					if (line.equals(END_OF_STREAM)) {

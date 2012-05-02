@@ -1,12 +1,11 @@
 package com.googlecode.hadoopproxy.test;
 
 import java.io.BufferedWriter;
+
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
-
-import org.apache.hadoop.io.Writable;
 
 import com.googlecode.hadoopproxy.ProxyClient;
 import com.googlecode.hadoopproxy.ProxyTask;
